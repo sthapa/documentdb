@@ -31,6 +31,7 @@ Requires:       (pgvector_%{pg_version} or percona-pgvector_%{pg_version})
 Requires:       pg_cron_%{pg_version}
 Requires:       postgis36_%{pg_version}
 Requires:       rum_%{pg_version}
+Requires:       jq
 # Libbson is now bundled, so no runtime Requires for it.
 # pcre2 is statically linked.
 # libbid.a is bundled.
@@ -75,6 +76,20 @@ cp -P /usr/%{_lib}/libbson-1.0.so %{buildroot}%{_libdir}/
 cp -P /usr/%{_lib}/libbson-1.0.so.0 %{buildroot}%{_libdir}/
 # static library
 cp /usr/%{_lib}/pkgconfig/libbson-static-1.0.pc %{buildroot}%{_libdir}/pkgconfig/
+# install scripts
+cp -P /usr/share/documentdb/scripts/utils.sh %{buildroot}%{_datadir}/documentdb/scripts/utils.sh
+cp -P /usr/share/documentdb/scripts/start_oss_server.sh %{buildroot}%{_datadir}/documentdb/scripts/start_oss_server.sh
+cp -P /usr/share/documentdb/scripts/build_and_start_gateway.sh %{buildroot}%{_datadir}/documentdb/scripts/build_and_start_gateway.sh
+cp -P /usr/share/documentdb/scripts/emulator_entrypoint.sh %{buildroot}%{_datadir}/documentdb/scripts/emulator_entrypoint.sh
+cp -P /usr/share/documentdb/scripts/init_documentdb_data.sh %{buildroot}%{_datadir}/documentdb/scripts/init_documentdb_data.sh
+cp -P /usr/share/documentdb/scripts/setup_psqlrc.sh %{buildroot}%{_datadir}/documentdb/scripts/setup_psqlrc.sh
+cp -P /usr/share/documentdb/scripts/documentdb-setup.sh %{buildroot}%{_datadir}/documentdb/scripts/documentdb-setup.sh
+# install sample data
+cp -P /usr/share/documentdb/sample-data/01-users.js %{buildroot}%{_datadir}/documentdb/sample-data/01-users.js
+cp -P /usr/share/documentdb/sample-data/02-products.js %{_datadir}/documentdb/sample-data/02-products.js
+cp -P /usr/share/documentdb/sample-data/03-orders.js %{_datadir}/documentdb/sample-data/03-orders.js
+cp -P /usr/share/documentdb/sample-data/04-analytics.js %{_datadir}/documentdb/sample-data/04-analytics.js
+cp -P /usr/share/documentdb/sample-data/README.md %{_datadir}/documentdb/sample-data/README.md
 
 # Install source code and test files for make check
 mkdir -p %{buildroot}/usr/src/documentdb
@@ -98,8 +113,27 @@ rm -rf %{buildroot}/usr/src/documentdb/build
 %{_libdir}/libbson-1.0.so.0
 %{_libdir}/libbson-1.0.so.0.0.0
 %{_libdir}/pkgconfig/libbson-static-1.0.pc
+# scripts needed for docker container and cli
+%{_datadir}/documentdb/scripts/utils.sh
+%{_datadir}/documentdb/scripts/start_oss_server.sh
+%{_datadir}/documentdb/scripts/build_and_start_gateway.sh
+%{_datadir}/documentdb/scripts/emulator_entrypoint.sh
+%{_datadir}/documentdb/scripts/init_documentdb_data.sh
+%{_datadir}/documentdb/scripts/setup_psqlrc.sh
+%{_datadir}/documentdb/scripts/documentdb-setup.sh
+# sample data needed for docker container and cli
+%{_datadir}/documentdb/sample-data/01-users.js
+%{_datadir}/documentdb/sample-data/02-products.js
+%{_datadir}/documentdb/sample-data/03-orders.js
+%{_datadir}/documentdb/sample-data/04-analytics.js
+%{_datadir}/documentdb/sample-data/README.md
+
+
 
 %changelog
+* Mon Jun 8 2026 Suchandra Thapa <suchandra@gmail.com> - 0.115
+- Add scripts and sample data to rpm packaging
+
 * Fri Aug 29 2025 Shuai Tian <shuaitian@microsoft.com> - 0.106-0
 - Add internal extension that provides extensions to the `rum` index. *[Feature]*
 - Enable let support for update queries *[Feature]*. Requires `EnableVariablesSupportForWriteCommands` to be `on`.
