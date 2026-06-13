@@ -6,7 +6,6 @@ install:
 	/usr/bin/install -m 644 start_oss_server.sh $(DESTDIR)/usr/share/documentdb/scripts/start_oss_server.sh
 	/usr/bin/install -m 644 build_and_start_gateway.sh $(DESTDIR)/usr/share/documentdb/scripts/build_and_start_gateway.sh
 	/usr/bin/install -m 644 setup_psqlrc.sh $(DESTDIR)/usr/share/documentdb/scripts/setup_psqlrc.sh
-#	/usr/bin/install -m 644 documentdb-setup.sh $(DESTDIR)/usr/share/documentdb/scripts/documentdb-setup.sh
 
 check:
 
